@@ -1,0 +1,32 @@
+cc_binary {
+        name: "perspectived",
+        cflags: ["-DLOG_TAG=\"perspectived\""],
+        srcs: ["PerspectiveService.cpp","LXCContainerManager.cpp"],
+        include_dirs: [
+            "external/lxc/src",
+            "vendor/maruos/include",
+        ],
+        shared_libs: [
+            "libandroid_runtime",
+            "liblog",
+            "libbinder",
+            "libutils",
+            "libperspective",
+            "liblxc",
+        ]
+    }
+
+
+cc_library_shared {
+        name: "libperspective",
+        srcs: ["lib/IPerspectiveService.cpp"],
+        include_dirs: [
+            "vendor/maruos/include",
+        ],
+        shared_libs: [
+            "liblog",
+            "libbinder",
+            "libutils",
+        ]
+    }
+
