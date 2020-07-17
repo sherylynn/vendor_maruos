@@ -57,6 +57,7 @@ get_state () {
         # A lingering lock file indicates that the previous installation failed
         # prematurely.
         state="$STATE_INCOMPLETE"
+        echo "It seems previous installation failed as the lock file is still present"
     elif [ -z "$(busybox ls -A "$MARU_DATA_DIR")" ] ; then
         # An empty $MARU_DATA_DIR indicates that the container has not been set
         # up, and it is very likely that this is the first boot of Maru if
@@ -64,6 +65,7 @@ get_state () {
         # Note: simply checking if $MARU_DATA_DIR exists won't work since it is
         # created in init.maru.rc during boot.
         state="$STATE_INCOMPLETE"
+        echo "/data/maru is empty, the maru data needs to be installed"
     else
         # If none of the error cases above are true, the installation must be
         # complete.
@@ -74,24 +76,25 @@ get_state () {
 
 # -----------------------------------------------------------------------------
 # main
+echo "### mcprepare starting ###"
 
 case $(get_state) in
     $STATE_COMPLETE)
-        success "Detected a complete installation - nothing to be done."
+        success "### mcprepare Detected a complete installation - nothing to be done. ###"
         ;;
     $STATE_INCOMPLETE)
         echo "Detected an incomplete installation - starting a fresh install..."
         ;;
     *)
-        die "Unknown installation state - aborting!"
+        die "### mcprepare Unknown installation state - aborting! ###"
         ;;
 esac
 
 busybox touch "$LOCK_FILE"
 
-echo "Copying maru files to /data..."
+echo "Copying maru files to /data/maru..."
 if ! busybox cp -r "$MARU_SYSTEM_DIR/." "$MARU_DATA_DIR/" ; then
-    die "Failed to copy maru files!"
+    die "### mcprepare Failed to copy maru files! ###"
 fi
 
 # not needed since we read rootfs from /system
@@ -99,9 +102,9 @@ busybox rm "$DST_DIR/rootfs.tar.gz"
 
 echo "Extracting $ROOTFS to $DST_DIR..."
 if ! busybox tar xzf "$ROOTFS" -C "$DST_DIR" ; then
-    die "Failed to extract rootfs!"
+    die "### mcprepare Failed to extract rootfs! ###"
 fi
 
 busybox rm -f "$LOCK_FILE"
 
-success "All tasks completed successfully."
+success "### mcprepare completed successfully ###"
