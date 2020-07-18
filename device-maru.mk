@@ -50,6 +50,10 @@ PRODUCT_PACKAGES += \
     libmaru \
     mflinger
 
+# maru settings
+PRODUCT_PACKAGES += \
+    MaruSettings
+
 PRODUCT_PACKAGES += \
 	mlogwrapper \
 	busybox
