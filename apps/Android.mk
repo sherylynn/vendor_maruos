@@ -15,5 +15,7 @@
 # limitations under the License.
 #
 LOCAL_PATH := $(call my-dir)
+PRODUCT_COPY_FILES += \
+    vendor/maruos/apps/permissions/privapp-permissions-maruos.xml:system/etc/permissions/privapp-permissions-maruos.xml
 
 include $(call all-makefiles-under, $(LOCAL_PATH))
