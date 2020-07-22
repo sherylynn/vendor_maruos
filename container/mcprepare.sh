@@ -32,8 +32,8 @@ ROOTFS="$SRC_DIR/rootfs.tar.gz"
 # -----------------------------------------------------------------------------
 # Installation states
 
-STATE_COMPLETE="COMPLETE"
-STATE_INCOMPLETE="INCOMPLETE"
+STATE_COMPLETE=1
+STATE_INCOMPLETE=0
 
 # a breadcrumb to indicate an installation is in progress
 LOCK_FILE="${MARU_DATA_DIR}/.lock"
@@ -56,7 +56,7 @@ get_state () {
     if [ -f "$LOCK_FILE" ] ; then
         # A lingering lock file indicates that the previous installation failed
         # prematurely.
-        state="$STATE_INCOMPLETE"
+        retval=$STATE_INCOMPLETE
         echo "It seems previous installation failed as the lock file is still present"
     elif [ -z "$(busybox ls -A "$MARU_DATA_DIR")" ] ; then
         # An empty $MARU_DATA_DIR indicates that the container has not been set
@@ -64,21 +64,24 @@ get_state () {
         # there is no lock file present.
         # Note: simply checking if $MARU_DATA_DIR exists won't work since it is
         # created in init.maru.rc during boot.
-        state="$STATE_INCOMPLETE"
+        retval=$STATE_INCOMPLETE
         echo "/data/maru is empty, the maru data needs to be installed"
     else
         # If none of the error cases above are true, the installation must be
         # complete.
-        state="$STATE_COMPLETE"
+        retval=$STATE_COMPLETE
+        echo "the installation seems complete"
     fi
-    echo "$state"
+    return $retval
 }
 
 # -----------------------------------------------------------------------------
 # main
 echo "### mcprepare starting ###"
 
-case $(get_state) in
+get_state
+state=$?
+case $state in
     $STATE_COMPLETE)
         success "### mcprepare Detected a complete installation - nothing to be done. ###"
         ;;
