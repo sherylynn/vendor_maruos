@@ -40,10 +40,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/container/lxc.conf:system/maru/lxc/etc/lxc/lxc.conf
 
-# Privapp permissions for Maru settings app
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/apps/permissions/privapp-permissions-maruos.xml:system/etc/permissions/privapp-permissions-maruos.xml
-
 # PerspectiveService
 PRODUCT_PACKAGES += \
     libperspective \
