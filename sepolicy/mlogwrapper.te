@@ -1,6 +1,6 @@
 # mlogwrapper
 type mlogwrapper, domain, coredomain;
-type mlogwrapper_exec, exec_type, file_type;
+type mlogwrapper_exec, exec_type, file_type, system_file_type;
 
 # started by init
 init_daemon_domain(mlogwrapper)
@@ -14,3 +14,6 @@ domain_auto_trans(mlogwrapper, mcprepare_exec, mcprepare)
 # write to mlogwrapper's IPC pipe
 allow mcprepare mlogwrapper:fd use;
 allow mcprepare mlogwrapper:fifo_file rw_file_perms;
+
+# Additional rules
+allow mlogwrapper system_file:file execute_no_trans;
