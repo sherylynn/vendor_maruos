@@ -1,7 +1,7 @@
 # perspectived daemon
 type perspectived, domain;
 typeattribute perspectived coredomain;
-type perspectived_exec, exec_type, file_type;
+type perspectived_exec, exec_type, file_type, system_file_type;
 
 # TODO log audits and make restrictive
 permissive perspectived;
@@ -51,3 +51,7 @@ allow perspectived cache_file:dir create_dir_perms;
 
 allow perspectived tmpfs:file create_file_perms;
 allow perspectived tmpfs:dir create_dir_perms;
+
+# Additional rules
+allow perspectived default_android_service:service_manager { add find };
+allow perspectived self:bpf { map_create map_read map_write prog_load prog_run };

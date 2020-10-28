@@ -1,6 +1,6 @@
 # mcprepare container utility
 type mcprepare, domain, coredomain;
-type mcprepare_exec, exec_type, file_type;
+type mcprepare_exec, exec_type, file_type, system_file_type;
 
 # started by init
 init_daemon_domain(mcprepare)
@@ -21,7 +21,11 @@ allow mcprepare maru_file:dir create_dir_perms;
 allow mcprepare maru_file:file { create_file_perms link };
 allow mcprepare maru_file:lnk_file create_file_perms;
 
-allow mcprepare self:capability { dac_override chown fsetid fowner };
+allow mcprepare self:capability { dac_override dac_read_search chown fsetid fowner };
 
 # mknod is in a neverallow so we let mknods fail in the extraction (harmless)
 dontaudit mcprepare self:capability mknod;
+
+# Additional rules
+allow mcprepare mcprepare:fifo_file ioctl;
+allow mcprepare system_data_file:dir write;
