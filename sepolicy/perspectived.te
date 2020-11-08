@@ -55,3 +55,12 @@ allow perspectived tmpfs:dir create_dir_perms;
 # Additional rules
 allow perspectived default_android_service:service_manager { add find };
 allow perspectived self:bpf { map_create map_read map_write prog_load prog_run };
+allow perspectived bt_firmware_file:filesystem unmount;
+allow perspectived firmware_file:filesystem unmount;
+allow perspectived kernel:key link;
+allow perspectived node:tcp_socket node_bind;
+allow perspectived op1_file:filesystem unmount;
+allow perspectived self:key { search setattr write };
+allow perspectived self:process execmem;
+allow kernel device:dir write;
+allow kernel self:capability kill;
