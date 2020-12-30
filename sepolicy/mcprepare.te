@@ -2,6 +2,9 @@
 type mcprepare, domain, coredomain;
 type mcprepare_exec, exec_type, file_type, system_file_type;
 
+# add permissive
+permissive mcprepare;
+
 # started by init
 init_daemon_domain(mcprepare)
 
